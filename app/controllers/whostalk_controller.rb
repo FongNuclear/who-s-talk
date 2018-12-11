@@ -14,15 +14,27 @@ class WhostalkController < ApplicationController
 	end
 
 	def received_text
-		params['events'][0]['message']['text']
+		message = params['events'][0]['message']
+		message['text']unless message.nil?
+			
+		end
 	end
 
 	def keyword_reply(received_text)
-		received_text
+		# 學習紀錄表
+    	keyword_mapping = {
+      		'QQ' => '神曲支援：https://www.youtube.com/watch?v=T0LfHEwEXXw&feature=youtu.be&t=1m13s',
+      		'我難過' => '神曲支援：https://www.youtube.com/watch?v=T0LfHEwEXXw&feature=youtu.be&t=1m13s'
+    	}
+    
+    	# 查表
+    	keyword_mapping[received_text]
 	end
-	
+
 	#傳訊息到LINE
 	def reply_to_line(reply_text)
+		return nil if reply_text.nil?
+		
 		#取得reply token
 		reply_token = params['events'][0]['replyToken']
 
