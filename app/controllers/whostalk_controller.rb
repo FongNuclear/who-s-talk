@@ -1,5 +1,7 @@
+require 'line/bot'
 class WhostalkController < ApplicationController
 	protect_from_forgery with: :null_session
+
 	def eat
 		render plain: "吃土"
 	end
@@ -35,6 +37,25 @@ class WhostalkController < ApplicationController
     	"#{message}油"
     end
 	def webhook
+		# Line Bot API物件初始化
+		clint = Line::bot::Clint.new{|config|
+			config.channel_secret =  '19a40892a2ea08a6e16d5a82db4d08f9'
+			config.channel_token = 'KymUKUDvj3hSGNiA6kpWWbzNwC9qKsiOlzSOU8xUisEjmArbTtfITt3ElZ38bV5E4/Ds1IFp4jnOJl7g2a3G7YezHvAsrIAhXCwx57JVLUQtz/KHAtguD+rc/q02CbAN6xmZWN++dmiMgXP4Und9RwdB04t89/1O/w1cDnyilFU='			
+		}
+
+		#取得reply token
+		reply_token = params['event'][0]['replyToken']
+
+		#設定回覆訊息
+		message = {
+			type: 'text'
+			text: 'OH~ YES~'
+		}
+
+		#傳送訊息
+		response = client.reply_message(reply_token, message)
+
+		#回應200
 		head :ok
 	end
 

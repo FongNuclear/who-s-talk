@@ -16,6 +16,10 @@ group :production do
 	gem 'pg', '~> 0.21.0'
 end
 #in production use postgresql
+
+#Line
+gem 'line-bot-api'
+
 gem 'puma', '~> 3.11'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
