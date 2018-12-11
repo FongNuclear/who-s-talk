@@ -6,18 +6,18 @@ class WhostalkController < ApplicationController
 		#設定回覆訊息
 		reply_text = keyword_reply(received_text)
 
-		#傳送訊息
+		#傳送訊息到LINE
 		response = reply_to_line(reply_text)
 		
 		#回應200
 		head :ok
 	end
 
+	#取得對方說的話
 	def received_text
 		message = params['events'][0]['message']
-		message['text']unless message.nil?
+		message['text'] unless message.nil?
 			
-		end
 	end
 
 	def keyword_reply(received_text)
@@ -34,7 +34,7 @@ class WhostalkController < ApplicationController
 	#傳訊息到LINE
 	def reply_to_line(reply_text)
 		return nil if reply_text.nil?
-		
+
 		#取得reply token
 		reply_token = params['events'][0]['replyToken']
 
