@@ -38,26 +38,22 @@ class WhostalkController < ApplicationController
     end
 	def webhook
 		# Line Bot API物件初始化
-		#client = Line::Bot::Client.new{ |config|
-		#	config.channel_secret =  '19a40892a2ea08a6e16d5a82db4d08f9'
-		#	config.channel_token = 'KymUKUDvj3hSGNiA6kpWWbzNwC9qKsiOlzSOU8xUisEjmArbTtfITt3ElZ38bV5E4/Ds1IFp4jnOJl7g2a3G7YezHvAsrIAhXCwx57JVLUQtz/KHAtguD+rc/q02CbAN6xmZWN++dmiMgXP4Und9RwdB04t89/1O/w1cDnyilFU='			
-		#}
+		client = Line::Bot::Client.new{ |config|
+			config.channel_secret =  '19a40892a2ea08a6e16d5a82db4d08f9'
+			config.channel_token = 'KymUKUDvj3hSGNiA6kpWWbzNwC9qKsiOlzSOU8xUisEjmArbTtfITt3ElZ38bV5E4/Ds1IFp4jnOJl7g2a3G7YezHvAsrIAhXCwx57JVLUQtz/KHAtguD+rc/q02CbAN6xmZWN++dmiMgXP4Und9RwdB04t89/1O/w1cDnyilFU='			
+		}
 
 		#取得reply token
-		#reply_token = params['events'][0]['replyToken']
-
-		#p "================底家底家================"
-		#p reply_token
-		#p "======================================="
+		reply_token = params['events'][0]['replyToken']
 
 		#設定回覆訊息
-		#message = {
-		#	type: 'text',
-		#	text: 'OH~ YES~'
-		#}
+		message = {
+			type: 'text',
+			text: 'OH~ YES~'
+		}
 
 		#傳送訊息
-		#response = client.reply_message(reply_token, message)
+		response = client.reply_message(reply_token, message)
 
 		#回應200
 		head :ok
