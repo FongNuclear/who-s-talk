@@ -5,8 +5,16 @@ class WhostalkController < ApplicationController
 	def webhook
 		#學說話
 		reply_text = learn(received_text)
-		#設定回覆訊息
+
+		#關鍵字回覆
 		reply_text = keyword_reply(received_text) if reply_text.nil?
+
+		#推齊
+		reply_text = echo2(channel_id, received_text) if reply_text.nil?
+
+		#記錄對話
+		save_to_received(channel_id, received_text)
+		save_to_reply(channel_id, reply_text)
 
 		#傳送訊息到LINE
 		response = reply_to_line(reply_text)
@@ -14,6 +22,44 @@ class WhostalkController < ApplicationController
 		#回應200
 		head :ok
 	end
+
+
+	#頻道id
+	def channel_id
+		source = params['events'][0]['source']
+		return source['groupId'] unless source['groupId'].nil?
+		return source['roomId'] unless source['roomId'].nil?
+		source['userId']
+	end
+
+
+	#儲存對話
+	def save_to_received(channel_id, received_text)
+		return if received_text.nil?
+		Received.create(channel_id: channel_id, text: received_text)
+	end
+
+
+	#儲存回應
+	def save_to_reply(channel_id, reply_text)
+		return if reply_text.nil?
+		Reply.create(channel_id: channel_id, text: reply_text)
+	end
+
+
+	#推齊
+	def echo2(channel_id, received_text)
+		# 如果在 channel_id 最近沒人講過 received_text，卡米狗就不回應
+		recent_received_texts = Received.where(channel_id: channel_id).last(5) &.pluck(:text)
+		return nil unless received_text.in? recent_received_texts
+
+		#如果在channel_id鬍子狗上一句回應是received_text, 鬍子狗就不回應
+		last_reply_text = Reply.where(channel_id: channel_id).last&/text
+		return nil if last_reply_text == received_text 
+
+		received_text
+	end
+
 
 	#學說話
 	def learn(received_text)
