@@ -27,9 +27,7 @@ class WhostalkController < ApplicationController
 	#頻道id
 	def channel_id
 		source = params['events'][0]['source']
-		return source['groupId'] unless source['groupId'].nil?
-		return source['roomId'] unless source['roomId'].nil?
-		source['userId']
+		source['groupId'] || source['roomId'] || source['userId']
 	end
 
 
@@ -54,7 +52,7 @@ class WhostalkController < ApplicationController
 		return nil unless received_text.in? recent_received_texts
 
 		#如果在channel_id鬍子狗上一句回應是received_text, 鬍子狗就不回應
-		last_reply_text = Reply.where(channel_id: channel_id).last&/text
+		last_reply_text = Reply.where(channel_id: channel_id).last&.text
 		return nil if last_reply_text == received_text 
 
 		received_text
