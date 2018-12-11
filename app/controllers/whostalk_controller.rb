@@ -3,14 +3,34 @@ class WhostalkController < ApplicationController
 	protect_from_forgery with: :null_session
 
 	def webhook
+		#學說話
+		reply_text = learn(received_text)
 		#設定回覆訊息
-		reply_text = keyword_reply(received_text)
+		reply_text = keyword_reply(received_text) if reply_text.nil?
 
 		#傳送訊息到LINE
 		response = reply_to_line(reply_text)
 		
 		#回應200
 		head :ok
+	end
+
+	#學說話
+	def =learn(received_text)
+		#如果開頭不是 鬍子狗學說話; 就跳出
+		return nil unless received_text[0..6] == '鬍子狗學說話;'
+		
+		received_text = received_text[7..-1]
+		semicolon_index = received_text.index(';')
+
+		#找不到分號就跳出
+		return nil if semicolon_index.nil?
+
+		keyword = received_text[0..semicolon_index-1]
+		message = received_text[semicolon_index+1..-1]
+
+		KeywordMapping.create(keyword: keyword, message: message)
+		'OH~ YES~'
 	end
 
 	#取得對方說的話
@@ -21,14 +41,13 @@ class WhostalkController < ApplicationController
 	end
 
 	def keyword_reply(received_text)
-		# 學習紀錄表
-    	keyword_mapping = {
-      		'QQ' => '神曲支援：https://www.youtube.com/watch?v=T0LfHEwEXXw&feature=youtu.be&t=1m13s',
-      		'我難過' => '神曲支援：https://www.youtube.com/watch?v=T0LfHEwEXXw&feature=youtu.be&t=1m13s'
-    	}
-    
-    	# 查表
-    	keyword_mapping[received_text]
+		mapping = KeywordMapping.where(keyword: received_text).last
+		if mapping.nil?
+			nil
+		else
+			mapping.message
+		end
+
 	end
 
 	#傳訊息到LINE
