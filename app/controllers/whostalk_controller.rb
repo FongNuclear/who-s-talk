@@ -95,12 +95,7 @@ class WhostalkController < ApplicationController
 			).last&.message
 		return message unless message.nil?
 
-		mapping = KeywordMapping.where(keyword: received_text).last
-		if mapping.nil?
-			nil
-		else
-			mapping.message
-		end
+		KeywordMapping.where(keyword: received_text).last&.message
 
 	end
 
