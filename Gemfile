@@ -11,6 +11,8 @@ gem 'rails', '~> 5.2.1'
 group :development, :test do 
 	gem 'sqlite3'
 end
+#登入功能
+gem 'devise'
 #in development use sqlite3
 group :production do
 	gem 'pg', '~> 0.21.0'

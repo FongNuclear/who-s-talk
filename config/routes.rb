@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
+  devise_for :users
+  resources :keyword_mappings
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   Rails.application.routes.draw do
+  resources :keyword_mappings
   	get '/whostalk/eat', to: 'whostalk#eat'
   	get '/whostalk/request_headers', to: 'whostalk#request_headers'
   	get '/whostalk/request_body', to: 'whostalk#request_body'
