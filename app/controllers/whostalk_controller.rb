@@ -60,7 +60,7 @@ class WhostalkController < ApplicationController
 
 
 	#學說話
-	def learn(received_text)
+	def learn(channel_id, received_text)
 		#如果開頭不是 鬍子狗學說話; 就跳出
 		return nil unless received_text[0..6] == '鬍子狗學說話;'
 		
