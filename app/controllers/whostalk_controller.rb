@@ -4,10 +4,10 @@ class WhostalkController < ApplicationController
 
 	def webhook
 		#學說話
-		reply_text = learn(received_text)
+		reply_text = learn(channel_id, received_text)
 
 		#關鍵字回覆
-		reply_text = keyword_reply(received_text) if reply_text.nil?
+		reply_text = keyword_reply(channel_id, received_text) if reply_text.nil?
 
 		#推齊
 		reply_text = echo2(channel_id, received_text) if reply_text.nil?
@@ -73,7 +73,11 @@ class WhostalkController < ApplicationController
 		keyword = received_text[0..semicolon_index-1]
 		message = received_text[semicolon_index+1..-1]
 
-		KeywordMapping.create(keyword: keyword, message: message)
+		KeywordMapping.create(
+			channel_id: channel_id, 
+			keyword: keyword, 
+			message: message
+			)
 		'OH~ YES~'
 	end
 
@@ -84,7 +88,13 @@ class WhostalkController < ApplicationController
 			
 	end
 
-	def keyword_reply(received_text)
+	def keyword_reply(channel_id, received_text)
+		message = KeywordMapping.where(
+			channel_id: channel_id,
+			keyword: received_text
+			).last&.message
+		return message unless message.nil?
+
 		mapping = KeywordMapping.where(keyword: received_text).last
 		if mapping.nil?
 			nil
