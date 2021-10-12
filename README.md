@@ -1,24 +1,9 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This project is a simply Line Bot. 
+If you interesting to know pleace click the link.
 
-Things you may want to cover:
+* Ruby version: 2.4.5
+* Line: https://liff.line.me/1645278921-kWRPP32q/?accountId=wsl6973o
 
-* Ruby version
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
